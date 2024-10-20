@@ -65,4 +65,4 @@ const Encryption = () => {
    );
 };
 
-export default Encryption;
+export default React.memo(Encryption);
