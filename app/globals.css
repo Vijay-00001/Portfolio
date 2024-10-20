@@ -28,6 +28,11 @@ body {
    }
 } */
 
+::-webkit-scrollbar {
+   display: none;
+   width: 0px;
+}
+
 .cursive {
    font-family: 'Cedarville Cursive', cursive;
 }
