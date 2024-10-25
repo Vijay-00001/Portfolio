@@ -4,29 +4,32 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-   --background: #ffffff;
-   --foreground: #171717;
+/* globals.css */
+
+/* Common colors */
+:root {
+   --color-background: #030014;
+   --color-text: #ffffff;
+   --color-primary: #7042f8; /* Main neon color */
+   --color-secondary: #b49bff; /* Secondary neon color */
+   --color-accent: #dc2743; /* Accent color */
+   --color-shadow-light: rgba(255, 255, 255, 0.5); /* Light shadow */
+   --color-shadow-dark: rgba(0, 0, 0, 0.5); /* Dark shadow */
 }
 
-@media (prefers-color-scheme: dark) {
-   :root {
-      --background: #0a0a0a;
-      --foreground: #ededed;
-   }
+/* Dark theme */
+[data-theme='dark'] {
+   --color-background: #030014;
+   --color-text: #ffffff;
 }
 
-body {
-   color: var(--foreground);
-   background: var(--background);
-   font-family: Arial, Helvetica, sans-serif;
+/* Light theme */
+[data-theme='light'] {
+   --color-background: #ffffff;
+   --color-text: #000000;
+   --color-primary: #ff007f; /* Change primary color for light theme */
+   --color-secondary: #ff7f50; /* Change secondary color for light theme */
 }
-
-@layer utilities {
-   .text-balance {
-      text-wrap: balance;
-   }
-} */
 
 ::-webkit-scrollbar {
    display: none;
@@ -93,6 +96,54 @@ body {
    display: none;
 }
 
-html {
-   scroll-behavior: smooth;
+.neon-text-container {
+   font-size: 2.5rem;
+   font-weight: bold;
+   color: #ffffff; /* Base color of the text */
+   text-shadow: 0 0 5px #ff00ff, /* Primary glow */ 0 0 10px #ff00ff,
+      /* Secondary glow */ 0 0 15px #ff00ff,
+      /* Tertiary glow */ 0 0 20px #ffe100,
+      /* Additional cyan glow */ 0 0 25px #00ffff,
+      /* Additional cyan glow */ 0 0 30px #00ff00; /* Final greenish glow */
+   border: 2px solid transparent;
+   border-radius: 8px;
+   padding: 10px 20px;
+   position: relative;
+   display: inline-block;
+}
+
+.neon-text-container::after {
+   content: '';
+   position: absolute;
+   top: -2px;
+   left: -2px;
+   right: -2px;
+   bottom: -2px;
+   border: 2px solid #ff00ff; /* Outer neon border */
+   border-radius: 8px;
+   opacity: 0.7;
+   filter: blur(8px);
+   z-index: -1;
+}
+
+@keyframes slide-down {
+   0% {
+      transform: translateY(-20px);
+      opacity: 0;
+   }
+   100% {
+      transform: translateY(0);
+      opacity: 1;
+   }
+}
+
+.animate-slide-down {
+   animation: slide-down 0.3s ease-out forwards;
+}
+
+@media (max-width: 768px) {
+   .rotate-90 {
+      transform: rotate(90deg);
+      transform-origin: center center;
+   }
 }

@@ -1,90 +1,52 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { slideInFromTop } from '@/utils/motions';
 import Image from 'next/image';
 import { Skill_data } from '@/constants';
 
-// const getPosition = (index: number) => {
-//    const radius = [200, 250, 300, 350, 400]; // Define radii for each layer
-//    const angles = [35, 20, 5]; // Define angles
-
-//    // Determine the layer based on the index
-//    const layerCount = radius.length;
-//    const layerIndex = Math.floor(index / (Skill_data.length / layerCount));
-//    const layerRadius = radius[layerIndex];
-
-//    // Calculate positions based on the angle
-//    const angleIndex = index % angles.length; // Index for angles
-//    const angle = angles[angleIndex] * (Math.PI / 180); // Convert to radians
-
-//    // Calculate positions for the right and left sides
-//    const positions = [
-//       { x: layerRadius * Math.cos(angle), y: layerRadius * Math.sin(angle) }, // Right side above
-//       { x: layerRadius * Math.cos(-angle), y: layerRadius * Math.sin(-angle) }, // Right side below
-//       {
-//          x: layerRadius * Math.cos(angle + Math.PI),
-//          y: layerRadius * Math.sin(angle + Math.PI),
-//       }, // Left side above
-//       {
-//          x: layerRadius * Math.cos(-angle + Math.PI),
-//          y: layerRadius * Math.sin(-angle + Math.PI),
-//       }, // Left side below
-//    ];
-
-//    return positions[index % positions.length]; // Return the position based on the index
-// };
-
 const getRandomPositionInCircle = (maxRadius: number) => {
-   const angle = Math.random() * 2 * Math.PI; // Random angle (0 to 360 degrees)
-   const radius = Math.sqrt(Math.random()) * maxRadius; // Random radius, ensuring uniform distribution
-   const x = radius * Math.cos(angle); // X position based on angle and radius
-   const y = radius * Math.sin(angle); // Y position based on angle and radius
+   const angle = Math.random() * 2 * Math.PI;
+   const radius = Math.sqrt(Math.random()) * maxRadius;
+   const x = radius * Math.cos(angle);
+   const y = radius * Math.sin(angle);
    return { x, y };
 };
 
 const Encryption = () => {
    const controls = useAnimation();
-   const [usedPositions, setUsedPositions] = useState(
-      new Map<number, { x: number; y: number }>()
-   ); // To track used positions
-   const maxRadius = 400; // Max radius in cm
+   const [usedPositions, setUsedPositions] = useState(new Map());
+   const maxRadius = 400;
 
    useEffect(() => {
       const startAnimation = () => {
          controls.start(index => {
-            let position;
+            let position: ReturnType<typeof getRandomPositionInCircle>;
 
-            // Check if a position has been assigned to the current index
             if (usedPositions.has(index)) {
-               // Re-use the previously stored position
                position = usedPositions.get(index);
             } else {
-               // Generate a new random position
                position = getRandomPositionInCircle(maxRadius);
-
-               // Store the position to ensure the index gets a unique spot
-               setUsedPositions(prev => new Map(prev).set(index, position!));
+               setUsedPositions(prev => new Map(prev).set(index, position));
             }
 
             return {
                opacity: 1,
-               scale: [0, 1.3, 0], // Image appears and then disappears
-               x: position!.x,
-               y: position!.y,
+               scale: [0, 1.3, 0],
+               x: position.x,
+               y: position.y,
                transition: {
-                  duration: 4.5, // Duration of the animation
+                  duration: 4.5,
                   ease: 'easeInOut',
-                  repeat: Infinity, // Infinite loop
+                  repeat: Infinity,
                   repeatType: 'loop',
-                  delay: index * 0.2, // Slight delay for staggered effect
+                  delay: index * 0.2,
                },
             };
          });
       };
 
-      startAnimation(); // Trigger the animation
+      startAnimation();
    }, [controls, usedPositions]);
 
    return (
@@ -117,7 +79,7 @@ const Encryption = () => {
                   alt="Lock Main"
                   width={70}
                   height={70}
-                  className=" z-10"
+                  className="z-10"
                />
             </div>
 
@@ -130,9 +92,9 @@ const Encryption = () => {
                      animate={controls}
                      className="absolute flex items-center justify-center"
                      style={{
-                        top: '50%', // Center Y position
-                        left: '50%', // Center X position
-                        translate: 'translate(-50%, -50%)', // Center the icon
+                        top: '50%',
+                        left: '50%',
+                        translate: 'translate(-50%, -50%)',
                      }}
                   >
                      <Image
@@ -150,25 +112,28 @@ const Encryption = () => {
                ))}
             </div>
 
-            <div className="Welcome-box px-[15px] py-[4px] z-[20] brder my-[20px] border-[#7042f88b] opacity-[0.9]">
+            <div className="Welcome-box px-[15px] py-[4px] z-[20] border my-[20px] border-[#7042f88b] opacity-[0.9]">
                <h1 className="Welcome-text text-[12px]">Encryption</h1>
             </div>
          </div>
+
          <div className="absolute z-[20] bottom-[10px] px-[5px]">
             <div className="cursive text-[20px] font-medium text-center text-gray-300">
                Secure your data with end-to-end encryption
             </div>
          </div>
 
-         <div className="w-full flex items-start justify-center absolute">
+         <div
+            className={`absolute w-full h-full flex items-center justify-center`}
+         >
             <video
                loop
                muted
                autoPlay
                playsInline
                preload="false"
-               className="w-full h-auto"
-               src="/encryption.webm/"
+               className={`w-full h-full object-cover transition-transform duration-500`}
+               src="/encryption.webm"
             />
          </div>
       </div>
